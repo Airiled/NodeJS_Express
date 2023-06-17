@@ -1,7 +1,17 @@
-const productsRouter = require('./products.routes')
+const express = require('express');
+
+const productsRouter = require('./products.routes');
+const usersRouter = require('./users.routes');
+const companiesRouter = require('./companies.routes');
 
 function routerApi(app){
-    app.use('/products', productsRouter);
+
+    const router = express.Router() //creamos una nueva ruta para poder almacenar 
+    app.use('/api/v1', router)
+
+    router.use('/products', productsRouter);
+    router.use('/users', usersRouter);
+    router.use('/companies', companiesRouter);
 }
 
 module.exports = routerApi;

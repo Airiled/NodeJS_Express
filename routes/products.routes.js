@@ -11,7 +11,7 @@ router.get('/', (req, res)=>{
             products.push({
                 product: faker.commerce.product(),
                 price: parseInt(faker.commerce.price()),
-                image: faker.image.image(),
+                image: faker.image.url(),
             })
         }
         res.json(
@@ -32,6 +32,34 @@ router.get('/:id', (req, res)=>{
     res.json({
         id,
         message: 'informacion del producto especifico'
+    })
+})
+
+router.post('/', (req, res)=>{
+    const body = req.body;
+    res.json({
+        message: 'created',
+        data: body
+    })
+})
+
+router.put('/:id', (req, res)=>{
+    const { id } = req.params;
+    const body = req.body;
+    res.json({
+        message: 'updated',
+        id,
+        data: body
+    })
+})
+
+router.delete('/:id', (req, res)=>{
+    const { id } = req.params;
+    const body = req.body;
+    res.json({
+        message: 'deleted',
+        id,
+        data: body
     })
 })
 
