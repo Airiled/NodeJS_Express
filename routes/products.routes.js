@@ -1,66 +1,43 @@
 const express = require("express");
-const { faker } = require('@faker-js/faker');
+const ProductsService = require('./../services/products.service');
+
 const router = express.Router()
+const service = new ProductsService();
 
-router.get('/', (req, res)=>{
-    const products = [];
-    const { limit } = req.query;
-
-    if(limit){
-        for (let index = 0; index < limit; index++) {
-            products.push({
-                product: faker.commerce.product(),
-                price: parseInt(faker.commerce.price()),
-                image: faker.image.url(),
-            })
-        }
-        res.json(
-            products
-        )
-    }else{
-        res.send('no hay parametros')
-    }
+router.get('/', async (req, res) => {
+    const products = await service.find();
+    res.json(products);
 })
 
 router.get('/offerts', (req, res)=> { // se colocan todos los endpoints antes del endpoint dinamico porque sino ocasiona un error
-                                            // tomando al endpoint estatico como uno dinamico
+                                    // tomando al endpoint estatico como uno dinamico
     res.send('Productos en oferta');
 })
 
-router.get('/:id', (req, res)=>{
+router.get('/:id', async (req, res)=>{
     const { id } = req.params;
-    res.json({
-        id,
-        message: 'informacion del producto especifico'
-    })
+    const product = service.findOne(id);
+    res.json(product)
 })
 
-router.post('/', (req, res)=>{
+router.post('/', async (req, res)=>{
     const body = req.body;
-    res.json({
-        message: 'created',
-        data: body
-    })
+    const createProduct = service.create(body);
+    res.json(createProduct);
 })
 
-router.put('/:id', (req, res)=>{
+router.patch('/:id', async (req, res)=>{
     const { id } = req.params;
     const body = req.body;
-    res.json({
-        message: 'updated',
-        id,
-        data: body
-    })
+
+    const updateProduct = service.update(id, body)
+    res.json(updateProduct);
 })
 
-router.delete('/:id', (req, res)=>{
+router.delete('/:id', async (req, res)=>{
     const { id } = req.params;
-    const body = req.body;
-    res.json({
-        message: 'deleted',
-        id,
-        data: body
-    })
+    const deleteUser = service.delete(id)
+    res.json(deleteUser);
 })
 
 module.exports = router;
