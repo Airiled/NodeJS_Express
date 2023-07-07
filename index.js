@@ -3,7 +3,7 @@ const express = require("express");
 
 // creamos una aplicación
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //Libreria BOOM para errores
 
@@ -15,7 +15,7 @@ app.use(express.json());
 
 const routerApi = require('./routes');
 
-app.get('/', (req, res)=> {
+app.get('/api', (req, res)=> {
     res.send('Hola, el servidor esta corriendo!');
 })
 
